@@ -1,0 +1,26 @@
+# По умолчанию все текстовые файлы → LF в репозитории
+* text=auto eol=lf
+
+# Явно для исходников
+*.c     text eol=lf
+*.cpp   text eol=lf
+*.h     text eol=lf
+*.hpp   text eol=lf
+
+# CMake
+*.cmake       text eol=lf
+CMakeLists.txt text eol=lf
+
+# Скрипты под Linux → LF
+*.sh    text eol=lf
+
+# Скрипты под Windows → CRLF
+*.bat   text eol=crlf
+*.ps1   text eol=crlf
+
+# Бинарники → не трогать
+*.png   binary
+*.jpg   binary
+*.exe   binary
+*.dll   binary
+*.so    binary

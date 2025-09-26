@@ -1,0 +1,21 @@
+# CMake build
+/build/
+CMakeCache.txt
+CMakeFiles/
+
+# Visual Studio
+.vs/
+*.vcxproj
+*.vcxproj.filters
+*.sln
+
+# Visual Studio Code
+.vscode/
+
+# Conan
+conanbuildinfo.*
+conan.lock
+
+# OS specific
+.DS_Store
+Thumbs.db
