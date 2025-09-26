@@ -1,0 +1,46 @@
+name: C++ CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y cmake g++ python3-pip curl jq
+          pip install conan==2.*
+
+      - name: Configure Conan profiles
+        run: |
+          conan profile detect
+
+      - name: Build task1
+        working-directory: task1_zmq
+        run: |
+          conan install . --build=missing -s build_type=Release
+          cmake --preset conan-default
+          cmake --build ./build/ --config Release
+
+      - name: Test task1
+        run: |
+          chmod +x tests/run_task1_test.sh
+          ./tests/run_task1_test.sh
+
+      - name: Build task2
+        working-directory: task2_http
+        run: |
+          conan install . --build=missing -s build_type=Release
+          cmake --preset conan-default
+          cmake --build ./build/ --config Release
+
+      - name: Test task2
+        run: |
+          chmod +x tests/run_task2_test.sh
+          ./tests/run_task2_test.sh
