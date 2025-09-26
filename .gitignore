@@ -19,3 +19,6 @@ conan.lock
 # OS specific
 .DS_Store
 Thumbs.db
+
+
+.task2_http_profile
