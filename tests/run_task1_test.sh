@@ -30,7 +30,7 @@ fi
 echo "▶ Using binary: $APP_BIN"
 
 # Запуск сервера
-"$APP_BIN" -d "$DATA_DIR" -u 127.0.0.1:5555 &
+"$APP_BIN" -m server -d "$DATA_DIR" -u 127.0.0.1:5555 &
 SERVER_PID=$!
 sleep 1
 
