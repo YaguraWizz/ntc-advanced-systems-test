@@ -39,7 +39,17 @@ jobs:
       #     conan install . --build=missing -s build_type=Release
       #     cmake --preset conan-release
       #     cmake --build ./build/ --config Release
+      # - name: Build task2
+      #   working-directory: task2_http
+      #   run: |
+      #     conan install . --build=missing -s build_type=Release
+      #     cmake --preset conan-release
+      #     cmake --build ./build/ --config Release
 
+      # - name: Test task2
+      #   run: |
+      #     chmod +x tests/run_task2_test.sh
+      #     ./tests/run_task2_test.sh
       # - name: Test task2
       #   run: |
       #     chmod +x tests/run_task2_test.sh
