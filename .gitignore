@@ -2,6 +2,7 @@
 /build/
 **/build/**
 CMakeCache.txt
+**/CMakeUserPresets.json
 CMakeFiles/
 
 # Visual Studio
@@ -16,6 +17,7 @@ CMakeFiles/
 # Conan
 conanbuildinfo.*
 conan.lock
+**/task2_http_profile
 
 # OS specific
 .DS_Store
