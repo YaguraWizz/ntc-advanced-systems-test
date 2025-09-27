@@ -13,3 +13,6 @@ class ExampleRecipe(ConanFile):
 
     def layout(self):
         cmake_layout(self)
+
+    def configure(self):
+        self.settings.compiler.cppstd = "20"

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(task1_zmq LANGUAGES CXX)
+project(task1_http LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,10 +12,6 @@ endforeach()
 
 set(FILE 
     src/main.cpp
-    src/analyze.hpp
-    src/analyze.cpp
-    src/types.hpp
-    src/utils.hpp
 )
 
 add_executable(app ${FILE})   
