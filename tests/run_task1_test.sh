@@ -6,6 +6,7 @@ EXPECTED="tests/task1_expected.txt"
 
 # Возможные пути до бинарника
 CANDIDATES=(
+  "task1_zmq/build/Release/bin/app"
   "task1_zmq/build/bin/app"
   "task1_zmq/build/bin/app.exe"
   "task1_zmq/build/bin/Debug/app.exe"
