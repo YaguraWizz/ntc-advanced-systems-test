@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include <iomanip>
 
 
 namespace data_loader
@@ -11,8 +12,8 @@ namespace data_loader
     using namespace std::string_literals;
 
     static std::optional<domain::Student> read_student_from_line(const std::string& line) {
-        // Шаблон: ID + Пробелы + ФИО + Пробелы + Дата
-        // Используем универсальный шаблон, не полагаясь на Unicode-свойства
+        // пїЅпїЅпїЅпїЅпїЅпїЅ: ID + пїЅпїЅпїЅпїЅпїЅпїЅпїЅ + пїЅпїЅпїЅ + пїЅпїЅпїЅпїЅпїЅпїЅпїЅ + пїЅпїЅпїЅпїЅ
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ Unicode-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         std::regex student_regex(R"((\d+)\s+([^\d]+)\s+(\d{1,2}\.\d{1,2}\.\d{4})\s*)");
         std::smatch matches;
 
@@ -22,7 +23,7 @@ namespace data_loader
                 std::string fio = matches[2].str();
                 std::string date_str = matches[3].str();
 
-                // Удаляем начальные и конечные пробелы из ФИО
+                // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ
                 size_t first = fio.find_first_not_of(' ');
                 size_t last = fio.find_last_not_of(' ');
                 if (first == std::string::npos) {
@@ -32,10 +33,20 @@ namespace data_loader
                     fio = fio.substr(first, (last - first + 1));
                 }
 
-                // Парсим дату
+                // РґР°С‚Р° СЂРѕР¶РґРµРЅРёСЏ
                 std::chrono::year_month_day birth_date{};
+                std::tm tm = {};
                 std::istringstream date_ss(date_str);
-                date_ss >> std::chrono::parse("%d.%m.%Y", birth_date);
+
+                date_ss >> std::get_time(&tm, "%d.%m.%Y");
+                if (date_ss.fail()) {
+                    std::cerr << "Validation Error (Date): Invalid date format in line: " << line << std::endl;
+                    return std::nullopt;
+                }
+
+                birth_date = std::chrono::year{tm.tm_year + 1900} /
+                            std::chrono::month{static_cast<unsigned>(tm.tm_mon + 1)} /
+                            std::chrono::day{static_cast<unsigned>(tm.tm_mday)};
 
                 if (!birth_date.ok()) {
                     std::cerr << "Validation Error (Date): Invalid date value in line: " << line << std::endl;
@@ -60,12 +71,12 @@ namespace data_loader
         return std::nullopt;
     }
 
-    // Функция для загрузки и объединения данных из всех файлов в директории
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     std::unordered_set<domain::Student, domain::Student::hash> load_all_students(const std::string& dir_path) {
-        // Используем unordered_set для автоматического объединения уникальных студентов
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ unordered_set пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         std::unordered_set<domain::Student, domain::Student::hash> combined_students;
 
-        // Проходим по всем файлам в директории
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         try {
             for (const auto& entry : fs::directory_iterator(dir_path)) {
                 if (entry.is_regular_file() && entry.path().extension() == ".txt") {
